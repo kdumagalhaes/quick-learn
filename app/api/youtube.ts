@@ -37,18 +37,25 @@ export const getRandomVideo = async () => {
 
     const videoData = await videoResponse.json();
     const videoDetails = videoData.items[0];
+    console.log("video details =", videoDetails);
 
-    // Convert duration to seconds
+    // Convert duration to mm:ss
     const duration = videoDetails.contentDetails.duration;
-    const match = duration.match(/PT(\d+)M(\d+)S/);
-    const seconds = match ? parseInt(match[1]) * 60 + parseInt(match[2]) : 0;
+    const match = duration.match(/PT(?:(\d+)M)?(?:(\d+)S)?/);
+
+    const minutes = match && match[1] ? parseInt(match[1]) : 0;
+    const seconds = match && match[2] ? parseInt(match[2]) : 0;
+
+    const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
+      seconds
+    ).padStart(2, "0")}`;
 
     // Only return if under 3 minutes
     if (seconds <= 180) {
       return {
         id: randomVideo.id.videoId,
         title: videoDetails.snippet.title,
-        duration: seconds,
+        duration: formattedTime,
         thumbnail: videoDetails.snippet.thumbnails.high.url,
       };
     }
