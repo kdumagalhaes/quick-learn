@@ -1,3 +1,20 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+:root {
+  --primary: #F9FAFB;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary);
+}
+
+a,
+a:visited,
+a:focus,
+a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
